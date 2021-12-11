@@ -1,6 +1,6 @@
 package aula05;
 
-class HelloWorld {
+public class HelloWorld {
 	
 	public static void main(String[] args) {
 		
