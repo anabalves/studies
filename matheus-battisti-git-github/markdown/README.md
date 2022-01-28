@@ -43,3 +43,7 @@ _um **texto** combinado_
 #### Imagem Externa
 
 ![Logo do PHP](https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/640px-PHP-logo.svg.png)
+
+## Links interessantes:
+
+[Google](https://www.google.com)
