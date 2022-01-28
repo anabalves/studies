@@ -60,3 +60,11 @@ function soma(a, b) {
   return a + b;
 }
 ```
+
+Lista de tarefas:
+
+- [x] CSS do rodapé
+- [ ] CSS da página de contatos
+- [x] Área de membros
+- [ ] Integração com outros pagamentos
+- [ ] Sistema de bônus primeira compra
