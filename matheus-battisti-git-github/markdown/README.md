@@ -49,3 +49,5 @@ _um **texto** combinado_
 [Google](https://www.google.com)
 
 [https://www.horadecodar.com.br](https://www.horadecodar.com.br)
+
+Contribuidor Principal: https://github.com/matheusbattisti
