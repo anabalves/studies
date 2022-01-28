@@ -18,3 +18,12 @@ __Melhoria 1__, _melhoria 2_
 
 _um **texto** combinado_
 
+### Linguagens do projeto
+
+* HTML
+* CSS
+* JavaScript
+* PHP
+* MySQL
+
+
