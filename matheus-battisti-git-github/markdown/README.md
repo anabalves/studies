@@ -39,3 +39,7 @@ _um **texto** combinado_
 #### Imagem Local
 
 ![Logo do Python](./img/python.png)
+
+#### Imagem Externa
+
+![Logo do PHP](https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/640px-PHP-logo.svg.png)
