@@ -51,3 +51,5 @@ _um **texto** combinado_
 [https://www.horadecodar.com.br](https://www.horadecodar.com.br)
 
 Contribuidor Principal: https://github.com/matheusbattisti
+
+[![Logo do PHP](https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/640px-PHP-logo.svg.png)](https://github.com/matheusbattisti)
