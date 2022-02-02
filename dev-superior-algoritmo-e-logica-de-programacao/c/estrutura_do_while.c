@@ -20,7 +20,7 @@ int main() {
         printf("Deseja repetir (s/n)?");
         limpar_entrada();
         scanf("%c", &resp);
-    } while (resp == 's');
+    } while (resp == 's' || resp == 'S');
 
     return 0;
 }
