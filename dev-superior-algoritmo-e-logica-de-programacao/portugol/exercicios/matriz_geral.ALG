@@ -22,7 +22,7 @@ Inicio
    escreval("MATRIZ DIGITADA:")
    para i de 0 ate N-1 faca
       para j de 0 ate N-1 faca
-         escreva(mat[i, j])
+         escreva(mat[i, j]:3:1)
       fimpara
       escreval
    fimpara
