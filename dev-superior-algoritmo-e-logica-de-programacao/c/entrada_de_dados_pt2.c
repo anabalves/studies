@@ -7,7 +7,6 @@ void limpar_entrada() {
 }
 
 void ler_texto(char *buffer, int length) {
-    limpar_entrada();
     fgets(buffer, length, stdin);
     strtok(buffer, "\n");
 }
@@ -21,12 +20,14 @@ int main() {
     scanf("%d", &idade1);
 
     printf("Digite o nome da pessoa 1:");
+    limpar_entrada();
     ler_texto(nome1, 50);
 
     printf("Digite o valor da idade 2:");
     scanf("%d", &idade2);
 
     printf("Digite o nome da pessoa 2:");
+    limpar_entrada();
     ler_texto(nome2, 50);
 
     printf("IDADE 1 = %d\n", idade1);
