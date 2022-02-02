@@ -4,7 +4,7 @@
 int main() {
 
     int idade;
-    float salario, altura;
+    double salario, altura;
     char genero;
     char nome[50];
 
