@@ -17,19 +17,14 @@ Inicio
 
       escreval
       escreval("NUMEROS PARES:")
-      para i de 0 ate N-1 faca
-         se vet[i] % 2 = 0 entao
-            escreva(vet[i], " ")
-         fimse
-      fimpara
-      escreval
-      
       cont <- 0
       para i de 0 ate N-1 faca
          se vet[i] % 2 = 0 entao
+            escreva(vet[i], " ")
             cont <- cont + 1
          fimse
       fimpara
+      escreval
       
       escreval
       escreval("QUANTIDADE DE PARES = ", cont)
