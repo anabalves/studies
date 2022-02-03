@@ -1,4 +1,4 @@
-Algoritmo "media_idades"
+Algoritmo "media_idade"
 
 Var
 
