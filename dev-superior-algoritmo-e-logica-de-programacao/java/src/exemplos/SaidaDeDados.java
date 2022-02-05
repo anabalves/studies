@@ -1,8 +1,12 @@
 package exemplos;
 
-public class Saida_de_dados {
+import java.util.Locale;
+
+public class SaidaDeDados {
 
     public static void main(String[] args) {
+
+        Locale.setDefault(Locale.US);
 
         System.out.print("Bom dia");
         System.out.print("Boa noite");
