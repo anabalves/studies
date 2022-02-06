@@ -6,7 +6,7 @@ using namespace std;
 int main() {
     int N, qtd, totalCobaias, totalSapos, totalCoelhos, totalRatos;
     char tipoCobaia;
-    double pratos, psapos, pcoelhos;
+    double pRatos, pSapos, pCoelhos;
     totalRatos = 0;
     totalCoelhos = 0;
     totalSapos = 0;
@@ -31,9 +31,9 @@ int main() {
 
     totalCobaias = totalRatos + totalSapos + totalCoelhos;
 
-    pcoelhos = ((double) totalCoelhos / totalCobaias) * 100.0;
-    pratos = ((double) totalRatos / totalCobaias) * 100.0;
-    psapos = ((double) totalSapos / totalCobaias) * 100.0;
+    pCoelhos = ((double) totalCoelhos / totalCobaias) * 100.0;
+    pRatos = ((double) totalRatos / totalCobaias) * 100.0;
+    pSapos = ((double) totalSapos / totalCobaias) * 100.0;
 
     cout << endl << "RELATORIO FINAL:" << endl;
     cout << "Total: " << totalCobaias << " cobaias" << endl;
@@ -42,9 +42,9 @@ int main() {
     cout << "Total de sapos: " << totalSapos << endl;
 
     cout << fixed << setprecision(2);
-    cout << "Percentual de coelhos: " << pcoelhos << endl;
-    cout << "Percentual de ratos: " << pratos << endl;
-    cout << "Percentual de sapos: " << psapos << endl;
+    cout << "Percentual de coelhos: " << pCoelhos << endl;
+    cout << "Percentual de ratos: " << pRatos << endl;
+    cout << "Percentual de sapos: " << pSapos << endl;
 
     return 0;
 }

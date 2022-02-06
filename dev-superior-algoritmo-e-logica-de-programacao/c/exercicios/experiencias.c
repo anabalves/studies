@@ -3,7 +3,7 @@
 int main(){
     int N, qtd, totalCobaias, totalSapos, totalCoelhos, totalRatos;
     char tipoCobaia;
-    double pratos, psapos, pcoelhos;
+    double pRatos, pSapos, pCoelhos;
     totalRatos = 0;
     totalCoelhos = 0;
     totalSapos = 0;
@@ -28,18 +28,18 @@ int main(){
 
     totalCobaias = totalRatos + totalSapos + totalCoelhos;
 
-    pcoelhos = ((double) totalCoelhos / totalCobaias) * 100.0;
-    pratos = ((double) totalRatos / totalCobaias) * 100.0;
-    psapos = ((double) totalSapos / totalCobaias) * 100.0;
+    pCoelhos = ((double) totalCoelhos / totalCobaias) * 100.0;
+    pRatos = ((double) totalRatos / totalCobaias) * 100.0;
+    pSapos = ((double) totalSapos / totalCobaias) * 100.0;
 
     printf("\nRELATORIO FINAL:\n");
     printf("Total: %d cobaias\n", totalCobaias);
     printf("Total de coelhos: %d\n", totalCoelhos);
     printf("Total de ratos: %d\n", totalRatos);
     printf("Total de sapos: %d\n", totalSapos);
-    printf("Percentual de coelhos: %.2lf\n", pcoelhos);
-    printf("Percentual de ratos: %.2lf\n", pratos);
-    printf("Percentual de sapos: %.2lf\n", psapos);
+    printf("Percentual de coelhos: %.2lf\n", pCoelhos);
+    printf("Percentual de ratos: %.2lf\n", pRatos);
+    printf("Percentual de sapos: %.2lf\n", pSapos);
 
     return 0;
 }
