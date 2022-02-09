@@ -1,4 +1,4 @@
-# DevSuperior - Algoritmo e Lógica de Programação
+# Nelio Alves - Algoritmo e Lógica de Programação
 
 Nesse repositório estão as atividades desenvolvidas no curso de [algoritmo e Lógica de Programação](https://www.udemy.com/course/curso-algoritmos-logica-de-programacao/) na plataforma Udemy sob orientação do professor Nelio Alves.
 
