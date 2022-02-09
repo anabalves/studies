@@ -2,7 +2,9 @@
 using System.Globalization;
 
 namespace entrada_de_dados {
+
     class Program {
+        
         static void Main(string[] args) {
 
             CultureInfo CI = CultureInfo.InvariantCulture;
