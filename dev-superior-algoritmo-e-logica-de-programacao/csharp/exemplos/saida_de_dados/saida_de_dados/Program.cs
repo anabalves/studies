@@ -2,7 +2,9 @@
 using System.Globalization;
 
 namespace saida_de_dados {
+
     class Program {
+        
         static void Main(string[] args) {
 
             Console.Write("Bom dia");

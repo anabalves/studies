@@ -1,7 +1,9 @@
 ﻿using System;
 
 namespace tipos_de_dados_e_variaveis {
+
     class Program {
+        
         static void Main(string[] args) {
 
             int idade;
