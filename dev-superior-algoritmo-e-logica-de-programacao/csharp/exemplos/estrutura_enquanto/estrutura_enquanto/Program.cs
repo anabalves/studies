@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Programa {
+namespace estrutura_enquanto {
 
     class Program {
 
