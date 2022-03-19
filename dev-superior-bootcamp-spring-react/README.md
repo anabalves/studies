@@ -1,3 +1,3 @@
-# DevSuperior - Java
+# DevSuperior - Bootcamp Spring React
 
-Nesse repositório estão as atividades desenvolvidas no curso de [Java](https://www.udemy.com/course/java-curso-completo/) na plataforma Udemy sob orientação do professor Nelio Alves.
+Nesse repositório estão as atividades desenvolvidas no bootcamp de [Spring React](https://devsuperior.com.br/bootcamp-spring-react) disponivel e sob orientação da escola DevSuperior.
