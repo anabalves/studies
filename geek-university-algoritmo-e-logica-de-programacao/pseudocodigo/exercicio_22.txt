@@ -1,0 +1,11 @@
+// 22 - Faca um algoritmo que leia um numero inteiro e mostre uma mensagem indicando se este numero e par ou impar, e se e positivo ou negativo.
+
+receber n1
+se (n1 % 2 == 0) entao
+	escrever "Numero par"
+senao
+	escrever "Numero impar"
+se (n1 > 0) entao
+	escrever "Numero maior do que zero"
+senao
+	escrever "Numero menor do que zero"
