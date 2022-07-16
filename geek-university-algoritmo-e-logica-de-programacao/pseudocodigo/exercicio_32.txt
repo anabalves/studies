@@ -1,0 +1,16 @@
+// 32 - Escreva um algoritmo que leia dois vetores de 10 posicoes e faca a soma dos elementos de mesmo indice, colocando o resultado em um terceiro vetor. Mostre o vetor resultante.
+
+vetor1 = []
+vetor2 = []
+soma = []
+para i = 0, enquanto i < 10, processar
+	escrever "Digite um valor para o primeiro vetor:"
+	receber valor1
+	escrever "Digite um valor para o segundo vetor:"
+	receber valor2
+	vetor1[i] = valor1
+	vetor2[i] = valor2
+	soma[i] = (valor1 + valor2)
+	
+para i = 0, enquanto i < 10, processar
+	escrever soma[i]
