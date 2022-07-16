@@ -1,0 +1,10 @@
+// 34 - Escreva um algoritmo que leia e mostre um vetor de 20 elementos inteiros, em seguida, mostre a soma de todos os elementos.
+
+vetor = []
+soma = 0
+para i = 0, enquanto i < 20, processar
+	escrever "Digite um valor:"
+	receber valor
+	vetor[i] = valor
+	soma = soma + valor
+escrever "Soma: " + soma
