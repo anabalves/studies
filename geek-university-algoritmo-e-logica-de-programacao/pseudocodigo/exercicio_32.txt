@@ -1,16 +1,12 @@
-// 32 - Escreva um algoritmo que leia dois vetores de 10 posicoes e faca a soma dos elementos de mesmo indice, colocando o resultado em um terceiro vetor. Mostre o vetor resultante.
+// 32 - Faca um algoritmo que carregue um vetor de 5 elementos inteiros e em seguida armazene em um vetor apenas os numeros pares maiores que 0. No final deve mostrar os elementos do vetor na tela.
 
-vetor1 = []
-vetor2 = []
-soma = []
-para i = 0, enquanto i < 10, processar
-	escrever "Digite um valor para o primeiro vetor:"
-	receber valor1
-	escrever "Digite um valor para o segundo vetor:"
-	receber valor2
-	vetor1[i] = valor1
-	vetor2[i] = valor2
-	soma[i] = (valor1 + valor2)
-	
-para i = 0, enquanto i < 10, processar
-	escrever soma[i]
+vetor = [0, 0, 0, 0, 0]
+pares = []
+contador = 0
+para i = 0, enquanto i < 5, processar
+    escrever "Digite um valor: "
+    receber vetor[i]
+    se (vetor[i] > 0) AND (vetor[i] % 2 == 0) então
+         pares[contador] = vetor[i]
+         contador = contador + 1
+escrever pares
