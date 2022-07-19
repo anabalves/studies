@@ -1,14 +1,10 @@
-// 35 - Faca um programa que carregue um vetor com dez numeros inteiros. Calcule e mostre os numeros superiores a 50 e suas respectivas posicoes. Mostrar mensagem se nao existir nenhum numero nesta condicao.
+// 35 - Escreva um algoritmo que leia e mostre um vetor de 20 elementos inteiros, em seguida, mostre a soma de todos os elementos.
 
-vetor = []
-maiores_50 = falso
-para i = 0, enquanto i < 10, processar
-	escrever "Digite um valor:"
-	receber valor
-	vetor[i] = valor
-	se valor > 50 entao 
-		escrever "Valor " + valor + " maior do que 50 na posicao " + i
-		maiores_50 = verdadeiro
-		
-se maiores_50 == falso entao
-	escrever "Nao existem valores maiores do que 50"
+vetor[20] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+soma = 0
+para i = 0, enquanto i < 20, processar
+    escrever "Digite um valor: "
+    receber vetor[i]
+    soma = soma + vetor[i]
+escrever "Vetor: " + vetor
+escrever "Soma: " + soma
