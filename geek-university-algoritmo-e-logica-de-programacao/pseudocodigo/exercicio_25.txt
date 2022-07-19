@@ -1,6 +1,9 @@
-// 25 - Faca um algoritmo que conte de 1 a 100 e a cada multiplo de 10 emita uma mensagem "Multiplo de 10".
+// 25 - Faca um algoritmo que determine o maior entre N numeros. A condicao de parada e a entrada de um valor 0, ou seja, o algoritmo deve ficar calculado o maior ate que a entrada seja igual a 0 (ZERO).
 
-para i = 1, enquanto i <= 100, processar
-	escrever i
-	se (i % 10 == 0) entao 
-		escrever "Multiplo de 10: " + i
+maior = 0
+receber valor
+enquanto valor != 0 processar
+	se valor > maior entao 
+		maior = valor
+	receber valor
+escrever "Maior valor " + maior
