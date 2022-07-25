@@ -6,7 +6,6 @@ escrever "Informe a senha:"
 receber senha
 enquanto senha == nome processar
 	escrever "Senha nao pode ser igual ao nome"
-	se valor > maior entao 
 	escrever "Informe o nome:"
 	receber nome
 	escrever "Informe a senha:"
