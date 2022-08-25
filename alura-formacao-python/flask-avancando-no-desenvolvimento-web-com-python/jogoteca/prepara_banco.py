@@ -85,6 +85,7 @@ jogos = [
       ('Super Mario World', 'Plataforma', 'Super Nintendo'),
       ('Sonic The Hedgehog', 'Plataforma', 'Sega Genesis'),
       ('Need for Speed', 'Corrida', 'PS2'),
+      ('Celeste', 'Plataforma', 'PS4')
 ]
 cursor.executemany(jogos_sql, jogos)
 
