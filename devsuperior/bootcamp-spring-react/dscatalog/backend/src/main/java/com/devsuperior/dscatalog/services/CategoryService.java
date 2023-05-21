@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.repositories.CategoryRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repository;
 
+    @Transactional(readOnly = true)
     public List<Category> findAll(){
         return repository.findAll();
     }
