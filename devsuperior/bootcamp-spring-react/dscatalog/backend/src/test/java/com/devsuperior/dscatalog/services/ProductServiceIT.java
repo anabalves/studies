@@ -3,7 +3,6 @@ package com.devsuperior.dscatalog.services;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.devsuperior.dscatalog.repositories.ProductRepository;
-import com.devsuperior.dscatalog.services.ProductService;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ public class ProductServiceIT {
     private ProductDTO productDTO;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         existingId = 1L;
         nonExistingId = 1000L;
         countTotalProducts = 25L;

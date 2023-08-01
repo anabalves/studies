@@ -1,11 +1,11 @@
 package com.devsuperior.dscatalog.resources;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import com.devsuperior.dscatalog.dto.UserDTO;
+import com.devsuperior.dscatalog.dto.UserInsertDTO;
+import com.devsuperior.dscatalog.dto.UserUpdateDTO;
+import com.devsuperior.dscatalog.tests.Factory;
 import com.devsuperior.dscatalog.tests.TokenUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.devsuperior.dscatalog.dto.ProductDTO;
-import com.devsuperior.dscatalog.tests.Factory;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class ProductResourceIT {
+public class UserResourceIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,8 +33,10 @@ public class ProductResourceIT {
 
     private Long existingId;
     private Long nonExistingId;
-    private Long countTotalProducts;
-    private ProductDTO productDTO;
+    private Long countTotalUsers;
+    private UserDTO userDTO;
+    private UserInsertDTO userInsertDTO;
+    private UserUpdateDTO userUpdateDTO;
 
     @Autowired
     private TokenUtil tokenUtil;
@@ -46,58 +48,66 @@ public class ProductResourceIT {
     void setUp() {
         existingId = 1L;
         nonExistingId = 1000L;
-        countTotalProducts = 25L;
-        productDTO = Factory.createProductDTO();
+        countTotalUsers = 2L;
+        userDTO = Factory.createUserDTO();
+        userInsertDTO = Factory.createUserInsertDTO();
+        userUpdateDTO = Factory.createUserUpdateDTO();
 
         username = "maria@gmail.com";
         password = "123456";
     }
 
     @Test
-    public void findAllShouldReturnSortedPageWhenSortByName() throws Exception {
+    public void findAllShouldReturnSortedPageWhenSortByEmail() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
         ResultActions result =
-                mockMvc.perform(get("/products?page=0&size=12&sort=name,asc")
+                mockMvc.perform(get("/users?page=0&size=12&sort=email,asc")
+                        .header("Authorization", "Bearer " + accessToken)
                         .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk());
-        result.andExpect(jsonPath("$.totalElements").value(countTotalProducts));
+        result.andExpect(jsonPath("$.totalElements").value(countTotalUsers));
         result.andExpect(jsonPath("$.content").exists());
         result.andExpect(jsonPath("$.size").value(12));
-        result.andExpect(jsonPath("$.content[0].name").value("Macbook Pro"));
-        result.andExpect(jsonPath("$.content[1].name").value("PC Gamer"));
-        result.andExpect(jsonPath("$.content[2].name").value("PC Gamer Alfa"));
+        result.andExpect(jsonPath("$.content[0].email").value("alex@gmail.com"));
+        result.andExpect(jsonPath("$.content[1].email").value("maria@gmail.com"));
     }
 
     @Test
-    public void findByIdShouldReturnProductDTOWhenIdExists() throws Exception {
-        ResultActions result = mockMvc.perform(get("/products/{id}", existingId)
+    public void findByIdShouldReturnUserDTOWhenIdExists() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
+        ResultActions result = mockMvc.perform(get("/users/{id}", existingId)
+                .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk());
         result.andExpect(jsonPath("$.id").value(existingId));
-        result.andExpect(jsonPath("$.name").exists());
-        result.andExpect(jsonPath("$.description").exists());
-        result.andExpect(jsonPath("$.price").exists());
-        result.andExpect(jsonPath("$.imgUrl").exists());
-        result.andExpect(jsonPath("$.date").exists());
-        result.andExpect(jsonPath("$.categories").exists());
+        result.andExpect(jsonPath("$.firstName").exists());
+        result.andExpect(jsonPath("$.lastName").exists());
+        result.andExpect(jsonPath("$.email").exists());
+        result.andExpect(jsonPath("$.roles").exists());
     }
 
     @Test
     public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
-        ResultActions result = mockMvc.perform(get("/products/{id}", nonExistingId)
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
+        ResultActions result = mockMvc.perform(get("/users/{id}", nonExistingId)
+                .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isNotFound());
     }
 
     @Test
-    public void insertShouldReturnProductDTOAndCreatedStatus() throws Exception {
+    public void insertShouldReturnUserDTOAndCreatedStatus() throws Exception {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
-        String jsonBody = objectMapper.writeValueAsString(productDTO);
+        String jsonBody = objectMapper.writeValueAsString(userInsertDTO);
 
-        ResultActions result = mockMvc.perform(post("/products")
+        ResultActions result = mockMvc.perform(post("/users")
                 .header("Authorization", "Bearer " + accessToken)
                 .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -105,21 +115,19 @@ public class ProductResourceIT {
 
         result.andExpect(status().isCreated());
         result.andExpect(jsonPath("$.id").exists());
-        result.andExpect(jsonPath("$.name").value(productDTO.getName()));
-        result.andExpect(jsonPath("$.description").value(productDTO.getDescription()));
-        result.andExpect(jsonPath("$.price").value(productDTO.getPrice()));
-        result.andExpect(jsonPath("$.imgUrl").value(productDTO.getImgUrl()));
-        result.andExpect(jsonPath("$.date").value(String.valueOf(productDTO.getDate())));
+        result.andExpect(jsonPath("$.firstName").value(userDTO.getFirstName()));
+        result.andExpect(jsonPath("$.lastName").value(userDTO.getLastName()));
+        result.andExpect(jsonPath("$.email").value(userDTO.getEmail()));
     }
 
     @Test
-    public void updateShouldReturnProductDTOWhenIdExists() throws Exception {
+    public void updateShouldReturnUserDTOWhenIdExists() throws Exception {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
-        String jsonBody = objectMapper.writeValueAsString(productDTO);
+        String jsonBody = objectMapper.writeValueAsString(userUpdateDTO);
 
         ResultActions result =
-                mockMvc.perform(put("/products/{id}", existingId)
+                mockMvc.perform(put("/users/{id}", existingId)
                         .header("Authorization", "Bearer " + accessToken)
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -127,21 +135,19 @@ public class ProductResourceIT {
 
         result.andExpect(status().isOk());
         result.andExpect(jsonPath("$.id").value(existingId));
-        result.andExpect(jsonPath("$.name").value(productDTO.getName()));
-        result.andExpect(jsonPath("$.description").value(productDTO.getDescription()));
-        result.andExpect(jsonPath("$.price").value(productDTO.getPrice()));
-        result.andExpect(jsonPath("$.imgUrl").value(productDTO.getImgUrl()));
-        result.andExpect(jsonPath("$.date").value(String.valueOf(productDTO.getDate())));
+        result.andExpect(jsonPath("$.firstName").value(userDTO.getFirstName()));
+        result.andExpect(jsonPath("$.lastName").value(userDTO.getLastName()));
+        result.andExpect(jsonPath("$.email").value(userDTO.getEmail()));
     }
 
     @Test
     public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
-        String jsonBody = objectMapper.writeValueAsString(productDTO);
+        String jsonBody = objectMapper.writeValueAsString(userUpdateDTO);
 
         ResultActions result =
-                mockMvc.perform(put("/products/{id}", nonExistingId)
+                mockMvc.perform(put("/users/{id}", nonExistingId)
                         .header("Authorization", "Bearer " + accessToken)
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -154,7 +160,7 @@ public class ProductResourceIT {
     public void deleteShouldReturnNoContentWhenIdExists() throws Exception {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
-        ResultActions result = mockMvc.perform(delete("/products/{id}", existingId)
+        ResultActions result = mockMvc.perform(delete("/users/{id}", existingId)
                 .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -165,7 +171,7 @@ public class ProductResourceIT {
     public void deleteShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
-        ResultActions result = mockMvc.perform(delete("/products/{id}", nonExistingId)
+        ResultActions result = mockMvc.perform(delete("/usersent/{id}", nonExistingId)
                 .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON));
 

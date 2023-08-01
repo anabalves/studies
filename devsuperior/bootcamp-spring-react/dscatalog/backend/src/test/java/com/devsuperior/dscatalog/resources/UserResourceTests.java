@@ -1,7 +1,9 @@
 package com.devsuperior.dscatalog.resources;
 
-import com.devsuperior.dscatalog.dto.CategoryDTO;
-import com.devsuperior.dscatalog.services.CategoryService;
+import com.devsuperior.dscatalog.dto.UserDTO;
+import com.devsuperior.dscatalog.dto.UserInsertDTO;
+import com.devsuperior.dscatalog.dto.UserUpdateDTO;
+import com.devsuperior.dscatalog.services.UserService;
 import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 import com.devsuperior.dscatalog.tests.Factory;
@@ -23,25 +25,20 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CategoryResourceTests {
+public class UserResourceTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private CategoryService service;
+    private UserService service;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -49,8 +46,10 @@ public class CategoryResourceTests {
     private Long existingId;
     private Long nonExistingId;
     private Long dependentId;
-    private CategoryDTO categoryDTO;
-    private PageImpl<CategoryDTO> page;
+    private UserDTO userDTO;
+    private UserInsertDTO userInsertDTO;
+    private UserUpdateDTO userUpdateDTO;
+    private PageImpl<UserDTO> page;
 
     @Autowired
     private TokenUtil tokenUtil;
@@ -67,18 +66,22 @@ public class CategoryResourceTests {
         nonExistingId = 1000L;
         dependentId = 3L;
 
-        categoryDTO = Factory.createCategoryDTO();
-        page = new PageImpl<>(List.of(categoryDTO));
+        userDTO = Factory.createUserDTO();
+        userInsertDTO = Factory.createUserInsertDTO();
+        userUpdateDTO = Factory.createUserUpdateDTO();
+        page = new PageImpl<>(List.of(userDTO));
+
+        when(service.loadUserByUsername(username)).thenReturn(Factory.createUserDetails());
 
         when(service.findAllPaged(any())).thenReturn(page);
         when(service.findAllPaged(any())).thenReturn(new PageImpl<>(Collections.emptyList()));
 
-        when(service.findById(existingId)).thenReturn(categoryDTO);
+        when(service.findById(existingId)).thenReturn(userDTO);
         when(service.findById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
 
-        when(service.insert(any())).thenReturn(categoryDTO);
+        when(service.insert(any())).thenReturn(userDTO);
 
-        when(service.update(eq(existingId), any())).thenReturn(categoryDTO);
+        when(service.update(eq(existingId), any())).thenReturn(userDTO);
         when(service.update(eq(nonExistingId), any())).thenThrow(ResourceNotFoundException.class);
 
         doNothing().when(service).delete(existingId);
@@ -88,8 +91,11 @@ public class CategoryResourceTests {
 
     @Test
     public void findAllShouldReturnPage() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
         ResultActions result =
-                mockMvc.perform(get("/categories")
+                mockMvc.perform(get("/users")
+                        .header("Authorization", "Bearer " + accessToken)
                         .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk());
@@ -97,8 +103,11 @@ public class CategoryResourceTests {
     }
 
     @Test
-    public void findAllShouldReturnEmptyPageWhenNoCategoriesExist() throws Exception {
-        ResultActions result = mockMvc.perform(get("/categories")
+    public void findAllShouldReturnEmptyPageWhenNoUsersExist() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
+        ResultActions result = mockMvc.perform(get("/users")
+                .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk());
@@ -107,33 +116,42 @@ public class CategoryResourceTests {
     }
 
     @Test
-    public void findByIdShouldReturnCategoryWhenIdExists() throws Exception {
+    public void findByIdShouldReturnUserWhenIdExists() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
         ResultActions result =
-                mockMvc.perform(get("/categories/{id}", existingId)
+                mockMvc.perform(get("/users/{id}", existingId)
+                        .header("Authorization", "Bearer " + accessToken)
                         .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isOk());
         result.andExpect(jsonPath("$.id").exists());
-        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(jsonPath("$.firstName").exists());
+        result.andExpect(jsonPath("$.lastName").exists());
+        result.andExpect(jsonPath("$.email").exists());
+        result.andExpect(jsonPath("$.roles").exists());
     }
 
     @Test
     public void findByIdShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
         ResultActions result =
-                mockMvc.perform(get("/categories/{id}", nonExistingId)
+                mockMvc.perform(get("/users/{id}", nonExistingId)
+                        .header("Authorization", "Bearer " + accessToken)
                         .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isNotFound());
     }
 
     @Test
-    public void insertShouldReturnCategoryDTOCreated() throws Exception {
+    public void insertShouldReturnUserDTOCreated() throws Exception {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
-        String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+        String jsonBody = objectMapper.writeValueAsString(userInsertDTO);
 
         ResultActions result =
-                mockMvc.perform(post("/categories")
+                mockMvc.perform(post("/users")
                         .header("Authorization", "Bearer " + accessToken)
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -141,17 +159,20 @@ public class CategoryResourceTests {
 
         result.andExpect(status().isCreated());
         result.andExpect(jsonPath("$.id").exists());
-        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(jsonPath("$.firstName").exists());
+        result.andExpect(jsonPath("$.lastName").exists());
+        result.andExpect(jsonPath("$.email").exists());
+        result.andExpect(jsonPath("$.roles").exists());
     }
 
     @Test
-    public void updateShouldReturnCategoryDTOWhenIdExists() throws Exception {
+    public void updateShouldReturnUserDTOWhenIdExists() throws Exception {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
-        String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+        String jsonBody = objectMapper.writeValueAsString(userUpdateDTO);
 
         ResultActions result =
-                mockMvc.perform(put("/categories/{id}", existingId)
+                mockMvc.perform(put("/users/{id}", existingId)
                         .header("Authorization", "Bearer " + accessToken)
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -159,17 +180,20 @@ public class CategoryResourceTests {
 
         result.andExpect(status().isOk());
         result.andExpect(jsonPath("$.id").exists());
-        result.andExpect(jsonPath("$.name").exists());
+        result.andExpect(jsonPath("$.firstName").exists());
+        result.andExpect(jsonPath("$.lastName").exists());
+        result.andExpect(jsonPath("$.email").exists());
+        result.andExpect(jsonPath("$.roles").exists());
     }
 
     @Test
     public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
-        String jsonBody = objectMapper.writeValueAsString(categoryDTO);
+        String jsonBody = objectMapper.writeValueAsString(userUpdateDTO);
 
         ResultActions result =
-                mockMvc.perform(put("/categories/{id}", nonExistingId)
+                mockMvc.perform(put("/users/{id}", nonExistingId)
                         .header("Authorization", "Bearer " + accessToken)
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -183,7 +207,7 @@ public class CategoryResourceTests {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
         ResultActions result =
-                mockMvc.perform(delete("/categories/{id}", existingId)
+                mockMvc.perform(delete("/users/{id}", existingId)
                         .header("Authorization", "Bearer " + accessToken)
                         .accept(MediaType.APPLICATION_JSON));
 
@@ -195,7 +219,7 @@ public class CategoryResourceTests {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
         ResultActions result =
-                mockMvc.perform(delete("/categories/{id}", nonExistingId)
+                mockMvc.perform(delete("/users/{id}", nonExistingId)
                         .header("Authorization", "Bearer " + accessToken)
                         .accept(MediaType.APPLICATION_JSON));
 
@@ -207,7 +231,7 @@ public class CategoryResourceTests {
         String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
         ResultActions result =
-                mockMvc.perform(delete("/categories/{id}", dependentId)
+                mockMvc.perform(delete("/users/{id}", dependentId)
                         .header("Authorization", "Bearer " + accessToken)
                         .accept(MediaType.APPLICATION_JSON));
 

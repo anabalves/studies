@@ -52,10 +52,10 @@ public class ProductServiceTests {
     private Category category;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
 
         existingId = 1L;
-        nonExistingId = 2L;
+        nonExistingId = 1000L;
         dependentId = 4L;
         product = Factory.createProduct();
         category = Factory.createCategory();

@@ -46,10 +46,10 @@ public class CategoryServiceTests {
     private CategoryDTO dto;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
 
         existingId = 1L;
-        nonExistingId = 2L;
+        nonExistingId = 1000L;
         dependentId = 4L;
         category = Factory.createCategory();
         dto = Factory.createCategoryDTO();

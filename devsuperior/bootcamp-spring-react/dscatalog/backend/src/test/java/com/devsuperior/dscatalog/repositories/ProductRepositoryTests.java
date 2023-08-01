@@ -28,7 +28,7 @@ public class ProductRepositoryTests {
     private long countTotalProducts;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         existingId = 1L;
         nonExistingId = 1000L;
         countTotalProducts = 25L;

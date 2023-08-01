@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.devsuperior.dscatalog.dto.CategoryDTO;
+import com.devsuperior.dscatalog.tests.TokenUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,21 @@ public class CategoryResourceIT {
     private Long countTotalCategories;
     private CategoryDTO categoryDTO;
 
+    @Autowired
+    private TokenUtil tokenUtil;
+
+    private String username;
+    private String password;
+
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         existingId = 1L;
         nonExistingId = 1000L;
         countTotalCategories = 4L;
         categoryDTO = Factory.createCategoryDTO();
+
+        username = "maria@gmail.com";
+        password = "123456";
     }
 
     @Test
@@ -79,9 +89,12 @@ public class CategoryResourceIT {
 
     @Test
     public void insertShouldReturnCategoryDTOAndCreatedStatus() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
         String jsonBody = objectMapper.writeValueAsString(categoryDTO);
 
         ResultActions result = mockMvc.perform(post("/categories")
+                .header("Authorization", "Bearer " + accessToken)
                 .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -93,10 +106,13 @@ public class CategoryResourceIT {
 
     @Test
     public void updateShouldReturnCategoryDTOWhenIdExists() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
         String jsonBody = objectMapper.writeValueAsString(categoryDTO);
 
         ResultActions result =
                 mockMvc.perform(put("/categories/{id}", existingId)
+                        .header("Authorization", "Bearer " + accessToken)
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -108,10 +124,13 @@ public class CategoryResourceIT {
 
     @Test
     public void updateShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
         String jsonBody = objectMapper.writeValueAsString(categoryDTO);
 
         ResultActions result =
                 mockMvc.perform(put("/categories/{id}", nonExistingId)
+                        .header("Authorization", "Bearer " + accessToken)
                         .content(jsonBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON));
@@ -121,7 +140,10 @@ public class CategoryResourceIT {
 
     @Test
     public void deleteShouldReturnNoContentWhenIdExists() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
         ResultActions result = mockMvc.perform(delete("/categories/{id}", existingId)
+                .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isNoContent());
@@ -129,7 +151,10 @@ public class CategoryResourceIT {
 
     @Test
     public void deleteShouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
+        String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
         ResultActions result = mockMvc.perform(delete("/categories/{id}", nonExistingId)
+                .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isNotFound());
